@@ -1,0 +1,5 @@
+package com.excelr.hms.controller;
+
+public class PrescriptionController {
+
+}

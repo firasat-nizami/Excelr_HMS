@@ -1,0 +1,53 @@
+import React from "react";
+import { Link } from "react-router-dom";
+import { FaLocationDot, FaPhone } from "react-icons/fa6";
+import { MdEmail } from "react-icons/md";
+import { FaGithub, FaInstagramSquare } from "react-icons/fa";
+import { RxLinkedinLogo } from "react-icons/rx";
+import { IoGlobeOutline } from "react-icons/io5";
+
+const Footer = () => {
+  return (
+    <>
+      <footer className="container">
+        <div className="content">
+          <div>
+            <img src="/patient/logo.png" alt="logo" className="logo-img" />
+          </div>
+          <div>
+            <h4>Quick Links</h4>
+            <ul>
+              <Link to={"/"}>Home</Link>
+              <Link to={"/appointment"}>Appointment</Link>
+              <Link to={"/about"}>About Us</Link>
+            </ul>
+          </div>
+          <div>
+            <h4>Developed by</h4>
+            <p>TEAM 7</p>
+          </div>
+          <div>
+            <h4>Contact</h4>
+            <div>
+              <FaPhone />
+              <span>999-999-9999</span>
+            </div>
+            <div>
+              <MdEmail />
+              <span>EXCELR@gmail.com</span>
+            </div>
+            <div>
+            <FaLocationDot/>
+            <span>Hyderabad, India</span>
+            </div>
+          </div>
+        </div>
+        <div className="copyright">
+        <p>&copy; {new Date().getFullYear()} EXCELR Hospital</p>
+        </div>
+      </footer>
+    </>
+  );
+};
+
+export default Footer;
