@@ -107,7 +107,7 @@ const Register = () => {
           />
         </div>
 
-        <div
+        {/* <div
           style={{
             gap: "10px",
             justifyContent: "flex-end",
@@ -121,6 +121,10 @@ const Register = () => {
           >
             Login Now
           </Link>
+        </div> */}
+        <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+          <p>Already Registered?</p>
+          <Link to={"/patient/login"}>Login Now</Link>
         </div>
         <div style={{ justifyContent: "center", alignItems: "center" }}>
           <button type="submit">Register</button>

@@ -18,8 +18,8 @@ const Footer = () => {
             <h4>Quick Links</h4>
             <ul>
               <Link to={"/"}>Home</Link>
-              <Link to={"/appointment"}>Appointment</Link>
-              <Link to={"/about"}>About Us</Link>
+              <Link to={"/patient/appointment"}>Appointment</Link>
+              <Link to={"/patient/about"}>About Us</Link>
             </ul>
           </div>
           <div>

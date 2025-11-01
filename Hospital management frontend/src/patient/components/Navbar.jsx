@@ -19,12 +19,12 @@ const Navbar = () => {
 
   // Login navigation
   const gotoLogin = () => {
-    navigateTo("/patient/login");
+    navigateTo("/patient/patient-login");
     setShow(!show);
   };
 
   // Navigate to Home after successful login (optional)
-  if (isAuthenticated && window.location.pathname === "/patient/login") {
+  if (isAuthenticated && window.location.pathname === "/patient/patient-login") {
     navigateTo("/patient");
   }
 
@@ -48,12 +48,12 @@ const Navbar = () => {
                 <Link to={"/"} onClick={() => setShow(!show)}>
                   Home
                 </Link>
-                <Link to={"/appointment"} onClick={() => setShow(!show)}>
+                <Link to={"/patient/appointment"} onClick={() => setShow(!show)}>
                   Appointment
                 </Link>
               </>
             ) : (
-              <Link to={"/about"} onClick={() => setShow(!show)}>
+              <Link to={"/patient/about"} onClick={() => setShow(!show)}>
                 About Us
               </Link>
             )}

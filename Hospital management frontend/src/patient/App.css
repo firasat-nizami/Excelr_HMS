@@ -80,7 +80,8 @@ a {
   }
 }
 .container {
-  padding: 0 100px;
+  padding: 20px 100px;
+  
 }
 @media (max-width: 700px) {
   .container {
@@ -162,7 +163,7 @@ a {
   }
 }
 .form-component {
-  min-height: 100vh;
+  
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -190,6 +191,7 @@ a {
   display: flex;
   flex-direction: column;
   gap: 30px;
+  width:80%;
 }
 .form-component form div {
   display: flex;
@@ -336,8 +338,12 @@ button{
     top: 10%;
   }
 }
+
+
 footer {
   padding-bottom: 30px !important;
+ 
+  align-items: center;
 }
 footer hr {
   margin-bottom: 30px;
@@ -360,6 +366,7 @@ footer .content div ul {
   display: flex;
   flex-direction: column;
   gap: 10px;
+
 }
 footer .content div ul a {
   color: #000;
@@ -485,7 +492,7 @@ nav {
   width: 100%;
   margin: 0 auto;
   justify-content: space-between;
-  position: absolute;
+  
   align-items: center;
   border-bottom-right-radius: 7px;
   border-bottom-left-radius: 7px;

@@ -56,20 +56,23 @@ const Login = () => {
           placeholder="Password"
         />
       
-        <div
-          style={{
-            gap: "10px",
-            justifyContent: "flex-end",
-            flexDirection: "row",
+        {/* <div
+          style={{display:"flex",justifyContent:"flex-end"
+            
           }}
         >
           <p style={{ marginBottom: 0 }}>Not Registered?</p>
           <Link
             to={"/patient/register"}
-            style={{ textDecoration: "none", alignItems: "center" }}
+            style={{marginTop:"35px" }}
           >
             Register Now
           </Link>
+        </div> */}
+
+        <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+          <p>Not Registered?</p>
+          <Link  to={"/patient/register"}>Register Now</Link>
         </div>
         <div style={{ justifyContent: "center", alignItems: "center" }}>
           <button type="submit">Login</button>

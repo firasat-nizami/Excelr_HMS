@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import './App.css';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -20,15 +20,19 @@ export default function PatientRoutes() {
   return (
     <>
       <Navbar />
+      
       <Routes>
-        <Route index element={<Home />} />
-        <Route path="about" element={<AboutUs />} />
-        <Route path="login" element={<Login />} />
-        <Route path="appointment" element={<Appointment />} />
-        <Route path="register" element={<Register />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/patient-login" element={<Login />} />
+        <Route path="/appointment" element={<Appointment />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
-      <Footer />
+       <Footer />
+      
       <ToastContainer position="top-center" />
+     
+
     </>
   );
 }
