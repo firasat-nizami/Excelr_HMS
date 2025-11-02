@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
 import Messages from "./components/Messages";
 import AddNewDoctor from "./components/AddNewDoctor";
-import AddNewAdmin from "./components/AddNewAdmin";
 import Login from "./components/Login";
 import Doctors from "./components/Doctors";
 import Sidebar from "./components/Sidebar";
@@ -44,8 +43,7 @@ export default function AdminRoutes() {
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="register" element={<Register />} />
         <Route path="doctor/addnew" element={<AddNewDoctor />} />
-        <Route path="admin/addnew" element={<AddNewAdmin />} />
-        <Route path="messages" element={<Messages />} />
+             <Route path="messages" element={<Messages />} />
         <Route path="doctors" element={<Doctors />} />
       </Routes>
       <ToastContainer position="top-center" />

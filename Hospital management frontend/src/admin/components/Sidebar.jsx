@@ -5,7 +5,6 @@ import { RiLogoutBoxFill } from "react-icons/ri";
 import { AiFillMessage } from "react-icons/ai";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaUserDoctor } from "react-icons/fa6";
-import { MdAddModerator } from "react-icons/md";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -35,20 +34,15 @@ const Sidebar = () => {
     setShow(false);
   };
 
-  const gotoAddNewAdmin = () => {
-    navigateTo("/admin/admin/addnew");
-    setShow(false);
-  };
-
-  // ✅ Updated Logout handler
+  // ✅ Logout handler
   const handleLogout = () => {
     toast.success("Logged out successfully!");
     setIsAuthenticated(false);
-    setShow(false); // ✅ Auto-close sidebar on logout
-    navigateTo("/admin"); // ✅ Redirect to admin landing page
+    setShow(false);
+    navigateTo("/admin");
   };
 
-  // ✅ Hide sidebar and hamburger before login
+  // ✅ Hide sidebar when not logged in
   if (!isAuthenticated) {
     return null;
   }
@@ -57,23 +51,20 @@ const Sidebar = () => {
     <>
       <nav className={show ? "show sidebar" : "sidebar"}>
         <div className="links">
-          <button className="icon-btn" aria-label="Home" onClick={gotoHome}>
-            <TiHome />
+          <button onClick={gotoHome}>
+            <TiHome /> <span>Home</span>
           </button>
-          <button className="icon-btn" aria-label="Doctors" onClick={gotoDoctors}>
-            <FaUserDoctor />
+          <button onClick={gotoDoctors}>
+            <FaUserDoctor /> <span>Doctors</span>
           </button>
-          <button className="icon-btn" aria-label="Add Admin" onClick={gotoAddNewAdmin}>
-            <MdAddModerator />
+          <button onClick={gotoAddNewDoctor}>
+            <IoPersonAddSharp /> <span>Add Doctor</span>
           </button>
-          <button className="icon-btn" aria-label="Add Doctor" onClick={gotoAddNewDoctor}>
-            <IoPersonAddSharp />
+          <button onClick={gotoMessages}>
+            <AiFillMessage /> <span>Messages</span>
           </button>
-          <button className="icon-btn" aria-label="Messages" onClick={gotoMessages}>
-            <AiFillMessage />
-          </button>
-          <button className="icon-btn" aria-label="Logout" onClick={handleLogout}>
-            <RiLogoutBoxFill />
+          <button onClick={handleLogout}>
+            <RiLogoutBoxFill /> <span>Logout</span>
           </button>
         </div>
       </nav>

@@ -21,9 +21,9 @@ const Doctors = () => {
       doctrAvatar: "/admin/docHolder.jpg",
     },
     {
-      firstName: "hello world",
-      lastName: "how are you",
-      email: "hello@gmail.com",
+      firstName: "Snehitha",
+      lastName: "Kovuri",
+      email: "snehitha@gmail.com",
       phone: "9876543210",
       dob: "1975-11-20",
       doctrDptmnt: "Neurology",

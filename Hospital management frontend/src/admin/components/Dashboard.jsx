@@ -14,20 +14,20 @@ const Dashboard = () => {
   const [appointments, setAppointments] = useState([
     {
       _id: "1",
-      firstName: "John",
-      lastName: "Doe",
+      firstName: "vishal",
+      lastName: "kumar",
       appointment_date: "2025-10-05",
-      doctor: { firstName: "Alice", lastName: "Smith" },
+      doctor: { firstName: "Likhith", lastName: "Badiga" },
       department: "Cardiology",
       status: "Pending",
       hasVisited: false,
     },
     {
       _id: "2",
-      firstName: "Jane",
+      firstName: "Rani",
       lastName: "Doe",
       appointment_date: "2025-10-06",
-      doctor: { firstName: "Bob", lastName: "Johnson" },
+      doctor: { firstName: "Snehitha", lastName: "Kovuri" },
       department: "Neurology",
       status: "Accepted",
       hasVisited: true,
@@ -60,7 +60,7 @@ const Dashboard = () => {
             <div className="content">
               <div>
                 <p>Hello, </p>
-                <h5>{user && `${user.firstName} ${user.lastName}`}</h5>
+                 <h5>{user && `${user.firstName} ${user.lastName}`}</h5>
               </div>
               <p>
                 The Excelr Administration panel allows admins to add new

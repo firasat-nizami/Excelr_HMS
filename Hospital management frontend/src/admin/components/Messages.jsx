@@ -11,16 +11,16 @@ const Messages = () => {
   const [messages] = useState([
     {
       _id: "1",
-      firstName: "John",
-      lastName: "Doe",
-      email: "john@example.com",
+      firstName: "Radha",
+      lastName: "varma",
+      email: "radha@example.com",
       phone: "1234567890",
       message: "I need an appointment for next week.",
     },
     {
       _id: "2",
-      firstName: "Jane",
-      lastName: "Smith",
+      firstName: "Vishal",
+      lastName: "deo",
       email: "jane@example.com",
       phone: "9876543210",
       message: "Please schedule a follow-up visit.",
