@@ -42,7 +42,12 @@ export default function DoctorRoutes() {
           </ProtectedRoute>
         }
       />
-      <Route path="*" element={<Navigate to="/doctor/login" replace />} />
+      <Route path="*"
+  element={
+    <ProtectedRoute allowedRole="ROLE_DOCTOR">
+      <div className="app-layout"> ... </div>
+    </ProtectedRoute>
+  } />
     </Routes>
   );
 }

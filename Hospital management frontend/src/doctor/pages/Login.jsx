@@ -1,20 +1,29 @@
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../../api";
+import { AuthContext } from "../../context/AuthContext";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const user = JSON.parse(localStorage.getItem("doctorUser"));
-    if (user && user.email === email && user.password === password) {
-      localStorage.setItem("isLoggedIn", true);
-      localStorage.setItem("doctorName", user.fullName);
+    setLoading(true);
+    try {
+      const res = await api.post("/api/auth/login", { username: email, password });
+      setUser(res.data);
+      toast.success("Doctor login successful");
       navigate("/doctor"); // redirect to dashboard
-    } else {
-      alert("Invalid credentials. Please register first.");
+    } catch (err) {
+      console.error(err);
+      toast.error(err?.response?.data || "Invalid credentials. Please register first.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -39,8 +48,8 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit" className="auth-btn">
-            Login
+          <button type="submit" className="auth-btn" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
         <div className="auth-switch">

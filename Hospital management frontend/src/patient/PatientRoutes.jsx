@@ -10,17 +10,16 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import Loading from './components/loading';
 
 export default function PatientRoutes() {
-  const [loading] = useState(false);
+  const [loading] = React.useState(false);
 
   if (loading) return <Loading />;
 
   return (
     <>
       <Navbar />
-      
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutUs />} />
@@ -28,13 +27,36 @@ export default function PatientRoutes() {
         <Route path="/appointment" element={<Appointment />} />
         <Route path="/register" element={<Register />} />
       </Routes>
-       <Footer />
-      
-      <ToastContainer position="top-center" />
-     
 
+      <Footer />
+      <ToastContainer position="top-center" />
     </>
   );
 }
+
+// export default function PatientRoutes() {
+//   const [loading] = useState(false);
+
+//   if (loading) return <Loading />;
+
+//   return (
+//     <>
+//       <Navbar />
+      
+//       <Routes>
+//         <Route path="/" element={<Home />} />
+//         <Route path="/about" element={<AboutUs />} />
+//         <Route path="/patient-login" element={<Login />} />
+//         <Route path="/appointment" element={<Appointment />} />
+//         <Route path="/register" element={<Register />} />
+//       </Routes>
+//        <Footer />
+      
+//       <ToastContainer position="top-center" />
+     
+
+//     </>
+//   );
+// }
 
 

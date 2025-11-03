@@ -7,13 +7,17 @@ import Appointments from "../components/Appointments";
 import Messages from "../components/Messages";
 import Reports from "../components/Reports";
 import Settings from "../components/Settings";
-
 import patientsData from "../data/patients";
 import appointmentsData from "../data/appointments";
 import reportsData from "../data/reports";
 import messagesData from "../data/messages";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Layout() {
+  const { user } = useContext(AuthContext);
+  const name = user ? `${user.firstName || ""} ${user.lastName || ""}`.trim() : "Dr. John Doe";
+
   return (
     <div className="app-layout">
       <Sidebar />
@@ -29,10 +33,10 @@ export default function Layout() {
             element={
               <Settings
                 initialProfile={{
-                  name: localStorage.getItem("doctorName") || "Dr. John Doe",
-                  email: "",
-                  phone: "",
-                  specialization: "",
+                  name,
+                  email: user?.username || "",
+                  phone: user?.phone || "",
+                  specialization: user?.specialization || "",
                 }}
               />
             }

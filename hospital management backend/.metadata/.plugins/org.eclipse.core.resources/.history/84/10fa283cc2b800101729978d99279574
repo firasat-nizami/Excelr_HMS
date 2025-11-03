@@ -1,0 +1,122 @@
+package com.excelr.hms.controller;
+
+import com.excelr.hms.dto.RegistrationRequest;
+import com.excelr.hms.model.User;
+import com.excelr.hms.service.UserService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+
+    public AuthController(UserService userService, AuthenticationManager authenticationManager) {
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
+    }
+
+    // 1️⃣ Patient Registration (Public)
+    @PostMapping("/register")
+    public ResponseEntity<?> registerPatient(@Validated @RequestBody RegistrationRequest req) {
+        if (userService.findByUsername(req.getUsername()).isPresent()) {
+            return ResponseEntity.badRequest().body("Username already exists");
+        }
+        User user = new User();
+        user.setUsername(req.getUsername());
+        user.setPassword(req.getPassword());
+        user.setFirstName(req.getFirstName());
+        user.setLastName(req.getLastName());
+        user.setPhone(req.getPhone());
+        User saved = userService.registerPatient(user);
+        saved.setPassword(null);
+        return ResponseEntity.ok(saved);
+    }
+
+    // 2️⃣ Doctor Registration (Admin only)
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/register-doctor")
+    public ResponseEntity<?> registerDoctor(@Validated @RequestBody RegistrationRequest req) {
+        if (userService.findByUsername(req.getUsername()).isPresent()) {
+            return ResponseEntity.badRequest().body("Username already exists");
+        }
+        User doctor = new User();
+        doctor.setUsername(req.getUsername());
+        doctor.setPassword(req.getPassword());
+        doctor.setFirstName(req.getFirstName());
+        doctor.setLastName(req.getLastName());
+        doctor.setPhone(req.getPhone());
+        doctor.setSpecialization("General Physician");
+        User saved = userService.registerDoctor(doctor);
+        saved.setPassword(null);
+        return ResponseEntity.ok(saved);
+    }
+
+    // 3️⃣ Admin Registration (Public only once)
+    @PostMapping("/register-admin")
+    public ResponseEntity<?> registerAdmin(@Validated @RequestBody RegistrationRequest req) {
+        if (userService.findByUsername(req.getUsername()).isPresent()) {
+            return ResponseEntity.badRequest().body("Username already exists");
+        }
+        User admin = new User();
+        admin.setUsername(req.getUsername());
+        admin.setPassword(req.getPassword());
+        admin.setFirstName(req.getFirstName());
+        admin.setLastName(req.getLastName());
+        admin.setPhone(req.getPhone());
+        User saved = userService.registerAdmin(admin);
+        saved.setPassword(null);
+        return ResponseEntity.ok(saved);
+    }
+
+    // 4️⃣ Login endpoint - accepts username/password and creates session
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody RegistrationRequest credentials, HttpServletRequest request) {
+        try {
+            UsernamePasswordAuthenticationToken token =
+                    new UsernamePasswordAuthenticationToken(credentials.getUsername(), credentials.getPassword());
+            Authentication auth = authenticationManager.authenticate(token);
+
+            // put authentication into SecurityContext
+            SecurityContextHolder.getContext().setAuthentication(auth);
+
+            // === IMPORTANT: create an HTTP session and store the security context so a Set-Cookie is sent ===
+            HttpSession session = request.getSession(true); // creates session if none exists
+            session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+
+            // load user object to return (without password)
+            User u = userService.findByUsername(credentials.getUsername()).orElse(null);
+            if (u != null) u.setPassword(null);
+            return ResponseEntity.ok(u);
+        } catch (AuthenticationException ex) {
+            return ResponseEntity.status(401).body("Invalid credentials");
+        }
+    }
+
+    // 5️⃣ Login Check (used by frontend to see if session is valid & to fetch user details)
+    @GetMapping("/login-check")
+    public ResponseEntity<?> loginCheck(Authentication auth) {
+        if (auth == null || !auth.isAuthenticated()) {
+            return ResponseEntity.status(401).body("Unauthorized");
+        }
+        // return current user details (without password)
+        User u = userService.findByUsername(auth.getName()).orElse(null);
+        if (u != null) u.setPassword(null);
+        return ResponseEntity.ok(u);
+    }
+
+    // Optional - ping test
+    @GetMapping("/ping")
+    public String ping() {
+        return "HMS backend running";
+    }
+}

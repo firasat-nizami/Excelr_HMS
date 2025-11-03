@@ -1,4 +1,3 @@
-import React, { useEffect, useState, createContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
 import Messages from "./components/Messages";
@@ -13,26 +12,17 @@ import ForgotPassword from "./components/ForgotPassword";
 import Register from "./components/Register";
 import LandingPage from "./components/LandingPage";
 import "./App.css";
-
-export const AdminContext = createContext({ isAuthenticated: false });
+import { AuthContext } from "../context/AuthContext";
+import React, { useContext } from "react";
 
 export default function AdminRoutes() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState({});
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setIsAuthenticated(false);
-      setUser({});
-      setLoading(false);
-    }, 500);
-  }, []);
+  const { user, loading } = useContext(AuthContext);
+  const isAuthenticated = !!user && user.role === "ROLE_ADMIN";
 
   if (loading) return <Loading />;
 
   return (
-    <AdminContext.Provider value={{ isAuthenticated, setIsAuthenticated, user, setUser }}>
+    <>
       {isAuthenticated && <Sidebar />}
       <Routes>
         <Route index element={<LandingPage />} />
@@ -43,11 +33,11 @@ export default function AdminRoutes() {
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="register" element={<Register />} />
         <Route path="doctor/addnew" element={<AddNewDoctor />} />
-             <Route path="messages" element={<Messages />} />
+        <Route path="messages" element={<Messages />} />
         <Route path="doctors" element={<Doctors />} />
       </Routes>
       <ToastContainer position="top-center" />
-    </AdminContext.Provider>
+    </>
   );
 }
 

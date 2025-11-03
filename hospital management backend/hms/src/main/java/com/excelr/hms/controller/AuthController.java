@@ -3,19 +3,30 @@ package com.excelr.hms.controller;
 import com.excelr.hms.dto.RegistrationRequest;
 import com.excelr.hms.model.User;
 import com.excelr.hms.service.UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-	private final UserService userService;
 
-    public AuthController(UserService s) {
-        this.userService = s;
+    private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+
+    public AuthController(UserService userService, AuthenticationManager authenticationManager) {
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
     }
 
     // 1️⃣ Patient Registration (Public)
@@ -71,13 +82,40 @@ public class AuthController {
         return ResponseEntity.ok(saved);
     }
 
-    // 4️⃣ Login Check (used by frontend later)
+    // 4️⃣ Login endpoint - accepts username/password and creates session
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody RegistrationRequest credentials, HttpServletRequest request) {
+        try {
+            UsernamePasswordAuthenticationToken token =
+                    new UsernamePasswordAuthenticationToken(credentials.getUsername(), credentials.getPassword());
+            Authentication auth = authenticationManager.authenticate(token);
+
+            // put authentication into SecurityContext
+            SecurityContextHolder.getContext().setAuthentication(auth);
+
+            // === IMPORTANT: create an HTTP session and store the security context so a Set-Cookie is sent ===
+            HttpSession session = request.getSession(true); // creates session if none exists
+            session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+
+            // load user object to return (without password)
+            User u = userService.findByUsername(credentials.getUsername()).orElse(null);
+            if (u != null) u.setPassword(null);
+            return ResponseEntity.ok(u);
+        } catch (AuthenticationException ex) {
+            return ResponseEntity.status(401).body("Invalid credentials");
+        }
+    }
+
+    // 5️⃣ Login Check (used by frontend to see if session is valid & to fetch user details)
     @GetMapping("/login-check")
     public ResponseEntity<?> loginCheck(Authentication auth) {
-        if (auth == null) {
+        if (auth == null || !auth.isAuthenticated()) {
             return ResponseEntity.status(401).body("Unauthorized");
         }
-        return ResponseEntity.ok("Logged in as: " + auth.getName());
+        // return current user details (without password)
+        User u = userService.findByUsername(auth.getName()).orElse(null);
+        if (u != null) u.setPassword(null);
+        return ResponseEntity.ok(u);
     }
 
     // Optional - ping test

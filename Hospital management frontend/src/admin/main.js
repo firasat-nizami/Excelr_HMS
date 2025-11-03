@@ -1,3 +1,5 @@
-export { AdminContext as Context } from './AdminRoutes';
+// src/admin/main.js
+export { AuthContext as Context } from "../context/AuthContext";
+
 
 
